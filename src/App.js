@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Chessboard } from 'react-chessboard';
+import { Chess } from 'chess.js';
 
-function App() {
+const App = () => {
+  const [game, setGame] = useState(new Chess());
+
+  const handleMove = (move) => {
+    if (game.move(move)) {
+      setGame(new Chess(game.fen()));
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Chess Game</h1>
+      <Chessboard
+        position={game.fen()}
+        onPieceMove={({ from, to }) => handleMove({ from, to })}
+      />
     </div>
   );
-}
+};
 
 export default App;
+
+
